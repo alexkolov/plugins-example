@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{ 'opacity-50': plugin.isDisabled }"
-    class="plugin mt-8 min-w-md border-2 border-gray-700 rounded"
+    class="plugin mt-8 min-w-md border-2 border-gray-400 rounded"
   >
     <div class="px-6 py-4">
       <div class="flex justify-between">
@@ -64,7 +64,7 @@ export default {
     ]),
     getInlineColor(isDisabled, isActive) {
       if (isDisabled) {
-        const color = isActive ? '#f56565' : '#68D391';
+        const color = isActive ? '#68D391' : '#F56565';
         return { background: `${color} !important` };
       }
       return {};

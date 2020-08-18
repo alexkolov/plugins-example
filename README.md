@@ -1,5 +1,12 @@
 # plugins-example
 
+two deminsions for states.
+
+- i18n
+- mobile menu
+- error handling
+- cross browser
+
 ## Project setup
 ```
 npm install

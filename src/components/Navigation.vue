@@ -85,6 +85,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+    border-left: 8px transparent solid;
+
+    &.router-link-exact-active {
+      background-color: white;
+      border-left: 8px #F56565 solid;
+    }
+  }
+
   .bottom {
     &.red {
       background: rgb(245,96,96);

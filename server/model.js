@@ -82,6 +82,33 @@ const model = {
   errors: null
 };
 
+const addPluginId = (routeId, status, pluginId) => {
+  model.data.tabdata[routeId][status].push(pluginId);
+};
+
+const removePluginId = (routeId, status, pluginId) => {
+  const newValue = model.data.tabdata[routeId][status].filter(
+    (id) => id !== pluginId
+  );
+  model.data.tabdata[routeId][status] = newValue;
+};
+
+const init = () => {
+  model.data.tabs.forEach((tab) => {
+    const { active, inactive, disabled } = model.data.tabdata[tab];
+
+    const isAbondened = (id) => {
+      return !active.includes(id) && !inactive.includes(id);
+    };
+
+    disabled.forEach((id) => {
+      if (isAbondened(id)) {
+        inactive.push(id);
+      }
+    })
+  });
+};
+
 const loadRoutes = () => {
   const { tabs, tabdata } = model.data;
 
@@ -106,42 +133,28 @@ const loadPlugins = (routeId) => {
 
   let plugins = [];
 
-  const parsePlugin = (id, status) => (
+  const parsePlugin = (id, isActive, isDisabled) => (
     {
       id,
-      isActive: status !== 'inactive',
-      isDisabled: status === 'disabled',
+      isActive,
+      isDisabled,
       ...model.data.plugins[id]
     }
   );
 
   ['active', 'inactive'].forEach(
     (status) => tabdata[status].forEach(
-      (id) => plugins.push(parsePlugin(id, status)
-    ))
-  );
-
-  tabdata['disabled'].forEach(
-    (id) => {
-      if (!tabdata['active'].includes(id)
-            && !tabdata['inactive'].includes(id)) {
-          plugins.push(parsePlugin(id, 'disabled'));
-        }
-    }
+      (id) => plugins.push(
+        parsePlugin(
+          id,
+          status === 'active',
+          tabdata.disabled.includes(id)
+        )
+      )
+    )
   );
 
   return plugins.sort((a, b) => a.id.localeCompare(b.id));
-};
-
-const addPluginId = (routeId, status, pluginId) => {
-  model.data.tabdata[routeId][status].push(pluginId);
-};
-
-const removePluginId = (routeId, status, pluginId) => {
-  const newValue = model.data.tabdata[routeId][status].filter(
-    (id) => id !== pluginId
-  );
-  model.data.tabdata[routeId][status] = newValue;
 };
 
 const updatePlugin = (routeId, pluginId, diff) => {
@@ -159,7 +172,6 @@ const updatePlugin = (routeId, pluginId, diff) => {
 const updatePlugins = (diff) => {
   if (diff.hasOwnProperty('isDisabled')) {
     model.data.tabs.forEach((tab) => {
-      console.log('new loop##################');
       let disabledIds;
       if (diff.isDisabled) {
         const { active, inactive, disabled } = model.data.tabdata[tab];
@@ -167,25 +179,15 @@ const updatePlugins = (diff) => {
           ...new Set([...active, ...inactive, ...disabled])
         ];
       } else {
-        const { active, inactive, disabled } = model.data.tabdata[tab];
-        const inactiveIds = [];
-        disabled.forEach((id) => {
-          if (!active.includes(id) && !inactive.includes(id)) {
-            inactiveIds.push(id);
-          }
-        });
-        model.data.tabdata[tab].inactive = [...inactive, ...inactiveIds];
         disabledIds = [];
       }
       model.data.tabdata[tab].disabled = disabledIds;
-      console.log('model.data.tabdata[tab].active', model.data.tabdata[tab].active);
-      console.log('model.data.tabdata[tab].inactive', model.data.tabdata[tab].inactive);
-      console.log('model.data.tabdata[tab].disabled', model.data.tabdata[tab].disabled);
     });
   }
 };
 
 module.exports = {
+  init,
   loadRoutes,
   loadPlugins,
   updatePlugin,
