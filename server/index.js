@@ -1,12 +1,11 @@
+const path = require('path');
 const express = require('express');
 const model = require('./model');
 
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json());
-
-app.use('/static', express.static('../dist'));
-
+app.use(express.static(path.join(__dirname, '../dist')));
 model.init();
 
 app.get('/api/routes', (req, res) => {
