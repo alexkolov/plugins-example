@@ -11,9 +11,17 @@ app.get('/api/routes', (req, res) => {
   );
 })
 
-app.get('/api/plugins/:tab', (req, res) => {
+app.get('/api/plugins/:routeId', (req, res) => {
   res.json(
-    model.loadPlugins(req.params.tab, req.body)
+    model.loadPlugins(req.params.routeId)
+  );
+});
+
+app.patch('/api/plugins/:routeId/:pluginId', (req, res) => {
+  const { routeId, pluginId } = req.params;
+
+  res.json(
+    model.updatePlugin(routeId, pluginId, req.body)
   );
 });
 

@@ -10,17 +10,17 @@
           >
 
           <router-link
-            v-for="(value, name) in routes"
-            :key="name"
-            :to="parseTo(name, value)"
+            v-for="item in routes"
+            :key="item.id"
+            :to="parseTo(item.id, item.title)"
             class="flex items-center h-16 pl-3"
           >
             <img
               class="mr-3"
-              :src="parseImgSrc(value.icon)"
+              :src="parseImgSrc(item.icon)"
               alt="Marketing Icon"
             >
-            {{ value.title }}
+            {{ item.title }}
           </router-link>
         </div>
       </div>
@@ -30,7 +30,7 @@
           All plugins {{ pluginsStatus }}
         </div>
         <ToggleButton
-          :value="getArePluginsEnabled"
+          :value="true"
           @toggle="saveArePluginsEnabled($event)"
         />
       </div>
@@ -62,10 +62,10 @@ export default {
       'saveArePluginsEnabled',
       'loadArePluginsEnabled'
     ]),
-    parseTo(name, value) {
-      return name === 'tab1'
+    parseTo(id, title) {
+      return id === 'tab1'
         ? '/'
-        : value.title.toLowerCase();
+        : title.toLowerCase();
     },
     parseImgSrc(icon) {
       return require(`../assets/${icon}.svg`)

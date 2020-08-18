@@ -16,8 +16,8 @@ const loadRoutes = async () => {
   }
 };
 
-const loadPlugins = async (tab) => {
-  const url = `/plugins/${tab}`;
+const loadPlugins = async (routeId) => {
+  const url = `/plugins/${routeId}`;
 
   try {
     const { data } = await http.get(url);
@@ -27,9 +27,21 @@ const loadPlugins = async (tab) => {
   }
 };
 
+const updatePlugin = async (routeId, pluginId, diff) => {
+  const url = `/plugins/${routeId}/${pluginId}`;
+
+  try {
+    await http.patch(url, diff);
+    return { status: 'success'};
+  } catch (error) {
+    return { status: 'error' };
+  }
+};
+
 const Service = {
   loadRoutes,
-  loadPlugins
+  loadPlugins,
+  updatePlugin
 };
 
 export default Service;

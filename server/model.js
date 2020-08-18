@@ -84,29 +84,60 @@ const model = {
 
 const loadRoutes = () => {
   const { tabs, tabdata } = model.data;
-  const extract = ({ title, icon }) => (
-    { title, icon }
+
+  const route = (tab, { title, icon }) => (
+    { id: tab, title, icon }
   );
-  const routes = tabs.reduce((acc, key) => (
-    {
-      ...acc,
-      [key]: extract(tabdata[key])
-    }
-  ), {});
+
+  const routes = [];
+  tabs.forEach((tab) => routes.push(
+    route(tab, tabdata[tab])
+  ));
+
   return routes
 };
 
-const loadPlugins = (tab) => {
-  if (!model.data.tabs.includes(tab)) { return {}; }
+const loadPlugins = (routeId) => {
+  if (!model.data.tabs.includes(routeId)) { return {}; }
 
-  const tabdata = model.data.tabdata[tab];
-  const { active, disabled, inactive } = tabdata;
-  const keys = [ ...active, ...disabled, ...inactive ];
+  const tabdata = model.data.tabdata[routeId];
 
-  return keys.reduce((acc, key) => (
-    { ...acc,  [key]: model.data.plugins[key] }
-  ), {});
+  let plugins = [];
+
+  ['active', 'disabled', 'inactive'].forEach(
+    (status) => tabdata[status].forEach(
+      (id) => plugins.push(
+        {
+          id,
+          isActive: status !== 'inactive',
+          isDisabled: status === 'disabled',
+          ...model.data.plugins[id]
+        }
+      )
+    )
+  );
+
+  return plugins.sort((a, b) => a.id.localeCompare(b.id));
 };
+
+const updatePlugin = (routeId, pluginId, diff) => {
+  console.log('updatePlugin');
+  console.log({ routeId });
+  console.log({ pluginId });
+  console.log({ diff });
+  console.log(model.data.tabdata[routeId]);
+
+  if (diff.hasOwnProperty('isActive')) {
+    if (diff.isActive) {
+      model.data.tabdata[routeId].active.push(pluginId);
+      model.data.tabdata[routeId].inactive = model.data.tabdata[routeId].inactive.filter((id) => id !== pluginId);
+    } else {
+      model.data.tabdata[routeId].inactive.push(pluginId);
+      model.data.tabdata[routeId].active = model.data.tabdata[routeId].active.filter((id) => id !== pluginId);
+    }
+  }
+  console.log(model.data.tabdata[routeId]);
+}
 
 const setState = (pluginKey, state) => {
   const { tabs, tabdata } = model.data;
@@ -125,8 +156,6 @@ const setStates = (state) => {
 
 module.exports = {
   loadRoutes,
-  loadTabs,
   loadPlugins,
-  setActive,
-  setDisabled
+  updatePlugin
 }
