@@ -20,11 +20,6 @@ import PluginCard from '@/components/PluginCard.vue';
 
 export default {
   name: 'Marketing',
-  data() {
-    return {
-      type: 'marketing'
-    };
-  },
   mixins: [pageMixin],
   components: {
     PluginCard

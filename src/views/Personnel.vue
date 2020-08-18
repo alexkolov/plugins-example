@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 class="mb-4 text-xl capitalize">
-      {{ type }} Plugins
+    <h1 class="mb-4 text-xl">
+      {{ routeTitle }} Plugins
     </h1>
 
     <div class="plugins flex flex-wrap justify-between">
@@ -15,17 +15,12 @@
 </template>
 
 <script>
-// import pageMixin from '@/mixins/page';
+import pageMixin from '@/mixins/page';
 import PluginCard from '@/components/PluginCard.vue';
 
 export default {
   name: 'Personnel',
-  data() {
-    return {
-      type: 'personnel'
-    };
-  },
-  // mixins: [pageMixin],
+  mixins: [pageMixin],
   components: {
     PluginCard
   }

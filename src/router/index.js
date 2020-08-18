@@ -9,10 +9,11 @@ export const parseRoutes = () => {
     .map(({ id, title }) => {
       const path = id === 'tab1'
         ? '/'
-        : title.toLowerCase();
+        : '/' + title.toLowerCase();
       const component = () => import(
         `../views/${title}.vue`
-      )
+      );
+      console.log(title);
       return {
         path,
         name: title,
