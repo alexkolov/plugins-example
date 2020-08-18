@@ -82,10 +82,19 @@ const model = {
   errors: null
 }
 
-const loadTabs = () => {
+const loadRoutes = () => {
   const { tabs, tabdata } = model.data;
-  return { tabs, tabdata };
-}
+  const extract = ({ title, icon }) => (
+    { title, icon }
+  );
+  const routes = tabs.reduce((acc, key) => (
+    {
+      ...acc,
+      [key]: extract(tabdata[key])
+    }
+  ), {});
+  return routes
+};
 
 const loadPlugins = (tab) => {
   if (!model.data.tabs.includes(tab)) { return {}; }
@@ -99,15 +108,23 @@ const loadPlugins = (tab) => {
   ), {});
 };
 
-const setActive = (plugin) => {
-
+const setState = (pluginKey, state) => {
+  const { tabs, tabdata } = model.data;
+  const inverseStates = ['active', 'disabled', 'inactive'].filter(
+    (el) => el !== state
+  );
+  tabs.forEach((tab) => {
+    tabdata[tab][state].push(pluginKey);
+  })
 };
 
-const setDisabled = () => {
-
+const setStates = (state) => {
+  const keys = Object.keys(model.data.plugins);
+  keys.forEach((el) => setState(key, state));
 };
 
 module.exports = {
+  loadRoutes,
   loadTabs,
   loadPlugins,
   setActive,

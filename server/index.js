@@ -5,11 +5,11 @@ const app = express();
 const port = 3000;
 app.use(express.json());
 
-app.get('/api/tabs', (req, res) => {
+app.get('/api/routes', (req, res) => {
   res.json(
-    model.loadTabs(req.query.category)
+    model.loadRoutes()
   );
-});
+})
 
 app.get('/api/plugins/:tab', (req, res) => {
   res.json(
