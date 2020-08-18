@@ -10,41 +10,19 @@
           >
 
           <router-link
-            to="/"
+            v-for="(value, name) in routes"
+            :key="name"
+            :to="parseTo(name, value)"
             class="flex items-center h-16 pl-3"
           >
             <img
               class="mr-3"
-              src="../assets/marketing-icon.svg"
+              :src="parseImgSrc(value.icon)"
               alt="Marketing Icon"
             >
-            Marketing
+            {{ value.title }}
           </router-link>
         </div>
-
-        <router-link
-          class="flex items-center h-16 pl-3"
-          to="/finance"
-        >
-          <img
-            class="mr-3"
-            src="../assets/finance-icon.svg"
-            alt="Finance Icon"
-          >
-          Finance
-        </router-link>
-
-        <router-link
-          class="flex items-center h-16 pl-3"
-          to="/personnel"
-        >
-          <img
-            class="mr-3"
-            src="../assets/personnel-icon.svg"
-            alt="Personnel Icon"
-          >
-          Personnel
-        </router-link>
       </div>
 
       <div class="bottom h-16 flex">
@@ -61,12 +39,15 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 import ToggleButton from '@/components/ToggleButton.vue';
 
 export default {
   name: 'Navigation',
   computed: {
+    ...mapState([
+      'routes'
+    ]),
     ...mapGetters([
       'getArePluginsEnabled'
     ]),
@@ -80,10 +61,15 @@ export default {
     ...mapActions([
       'saveArePluginsEnabled',
       'loadArePluginsEnabled'
-    ])
-  },
-  created() {
-    this.loadArePluginsEnabled();
+    ]),
+    parseTo(name, value) {
+      return name === 'tab1'
+        ? '/'
+        : value.title.toLowerCase();
+    },
+    parseImgSrc(icon) {
+      return require(`../assets/${icon}.svg`)
+    }
   },
   components: {
     ToggleButton
