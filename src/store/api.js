@@ -38,10 +38,22 @@ const updatePlugin = async (routeId, pluginId, diff) => {
   }
 };
 
+const updatePlugins = async (diff) => {
+  const url = '/plugins';
+
+  try {
+    await http.patch(url, diff);
+    return { status: 'success'};
+  } catch (error) {
+    return { status: 'error' };
+  }
+};
+
 const Service = {
   loadRoutes,
   loadPlugins,
-  updatePlugin
+  updatePlugin,
+  updatePlugins
 };
 
 export default Service;

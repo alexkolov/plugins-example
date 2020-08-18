@@ -25,6 +25,12 @@ app.patch('/api/plugins/:routeId/:pluginId', (req, res) => {
   );
 });
 
+app.patch('/api/plugins', (req, res) => {
+  res.json(
+    model.updatePlugins(req.body)
+  );
+});
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });

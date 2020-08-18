@@ -81,10 +81,17 @@ export default new Vuex.Store({
     },
     async setPluginsIsDisabled({ commit }, value) {
       console.log('setPluginsIsDisabled', value);
-      commit(
-        SET_PLUGINS_IS_DISABLED,
-        value
+
+      const { status } = await Service.updatePlugins(
+        { isDisabled: value }
       );
+
+      if (status === 'success') {
+        commit(
+          SET_PLUGINS_IS_DISABLED,
+          value
+        );
+      }
     }
   }
 })
