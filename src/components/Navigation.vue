@@ -30,8 +30,8 @@
           All plugins {{ pluginsStatus }}
         </div>
         <ToggleButton
-          :value="true"
-          @toggle="saveArePluginsEnabled($event)"
+          :value="!isDisabled"
+          @toggle="toggle($event)"
         />
       </div>
     </div>
@@ -39,29 +39,34 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import ToggleButton from '@/components/ToggleButton.vue';
 
 export default {
   name: 'Navigation',
+  data() {
+    return {
+      isDisabled: false
+    }
+  },
   computed: {
     ...mapState([
       'routes'
     ]),
-    ...mapGetters([
-      'getArePluginsEnabled'
-    ]),
     pluginsStatus() {
-      return this.getArePluginsEnabled
-        ? 'enabled'
-        : 'disabled';
+      return this.isDisabled
+        ? 'disabled'
+        : 'enabled';
     }
   },
   methods: {
     ...mapActions([
-      'saveArePluginsEnabled',
-      'loadArePluginsEnabled'
+      'setPluginsIsDisabled',
     ]),
+    toggle(event) {
+      this.isDisabled = !event;
+      this.setPluginsIsDisabled(!event);
+    },
     parseTo(id, title) {
       return id === 'tab1'
         ? '/'

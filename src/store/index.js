@@ -7,7 +7,7 @@ Vue.use(Vuex)
 const SET_ROUTES = 'SET_ROUTES';
 const SET_PLUGINS = 'SET_PLUGINS';
 const SET_PLUGIN_IS_ACTIVE = 'SET_PLUGIN_IS_ACTIVE';
-const DISABLE_ALL_PLUGINS = 'DISABLE_ALL_PLUGINS';
+const SET_PLUGINS_IS_DISABLED = 'SET_PLUGINS_IS_DISABLED';
 
 export default new Vuex.Store({
   state: {
@@ -36,9 +36,12 @@ export default new Vuex.Store({
         }
       );
     },
-    [DISABLE_ALL_PLUGINS](state) {
+    [SET_PLUGINS_IS_DISABLED](state, value) {
       state.plugins = state.plugins.map(
-        (plugin) => plugin.status = 'disabled'
+        (plugin) => {
+          plugin.isDisabled = value;
+          return plugin;
+        }
       )
     }
   },
@@ -76,9 +79,11 @@ export default new Vuex.Store({
         );
       }
     },
-    async disableAllPlugins({ commit }) {
+    async setPluginsIsDisabled({ commit }, value) {
+      console.log('setPluginsIsDisabled', value);
       commit(
-        DISABLE_ALL_PLUGINS
+        SET_PLUGINS_IS_DISABLED,
+        value
       );
     }
   }

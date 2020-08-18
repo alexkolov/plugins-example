@@ -130,10 +130,12 @@ const updatePlugin = (routeId, pluginId, diff) => {
   if (diff.hasOwnProperty('isActive')) {
     if (diff.isActive) {
       model.data.tabdata[routeId].active.push(pluginId);
-      model.data.tabdata[routeId].inactive = model.data.tabdata[routeId].inactive.filter((id) => id !== pluginId);
+      const newInactives =  model.data.tabdata[routeId].inactive.filter((id) => id !== pluginId);
+      model.data.tabdata[routeId].inactive = newInactives;
     } else {
+      const newActives = model.data.tabdata[routeId].active.filter((id) => id !== pluginId);
+      model.data.tabdata[routeId].active = newActives;
       model.data.tabdata[routeId].inactive.push(pluginId);
-      model.data.tabdata[routeId].active = model.data.tabdata[routeId].active.filter((id) => id !== pluginId);
     }
   }
   console.log(model.data.tabdata[routeId]);
