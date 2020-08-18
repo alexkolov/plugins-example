@@ -65,7 +65,6 @@ export default new Vuex.Store({
       }
     },
     async setPluginIsActive({ commit }, { routeId, pluginId, value }) {
-      console.log('setPluginIsActive', value);
       const { status } = await Service.updatePlugin(
         routeId,
         pluginId,
@@ -80,8 +79,6 @@ export default new Vuex.Store({
       }
     },
     async setPluginsIsDisabled({ commit }, value) {
-      console.log('setPluginsIsDisabled', value);
-
       const { status } = await Service.updatePlugins(
         { isDisabled: value }
       );

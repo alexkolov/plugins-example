@@ -5,6 +5,7 @@
         <input
           :checked="value"
           :disabled="disabled"
+          :class="{ onIcon: 'with-on-icon'}"
           @change="$emit('toggle', $event.target.checked)"
           type="checkbox"
           name="toggle"
@@ -20,20 +21,23 @@ export default {
   name: 'ToggleButton',
   props: {
     value: Boolean,
-    disabled: Boolean
+    disabled: Boolean,
+    onIcon: Boolean
   }
 };
 </script>
 
 <style scoped lang="postcss">
+.toggle-checkbox.with-on-icon {
+  background:url(../assets/icon-on.svg) no-repeat auto;
+}
+
 .toggle-checkbox:checked {
-  @apply: text-center right-0 border-green-400;
   right: 0;
   border-color: #68D391;
 }
 
 .toggle-checkbox:checked + .toggle-label {
-  @apply: bg-green-400;
   background-color: #68D391;
 }
 </style>

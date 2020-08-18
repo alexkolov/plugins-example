@@ -28,4 +28,22 @@ export default {
 </script>
 
 <style lang="scss">
+a {
+  font-weight: bold;
+  color: #2c3e50;
+  border-left: 8px transparent solid;
+
+  &.router-link-exact-active {
+    background-color: white;
+    border-left: 8px darkred solid;
+  }
+}
+
+.vue-toggles.with-on-icon {
+  .dot {
+      background: url(./assets/icon-on.svg) !important;
+      background-repeat: no-repeat !important;
+      background-size: contain !important;
+  }
+}
 </style>

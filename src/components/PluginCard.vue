@@ -10,14 +10,19 @@
         </div>
 
         <div class="flex flex-col items-center">
-          <ToggleButton
-            :value="plugin.isActive"
+          <VueToggles
+            :width="40"
+            :height="24"
             :disabled="plugin.isDisabled"
-            @toggle="setPluginIsActive({
+            :value="plugin.isActive"
+            @click="setPluginIsActive({
               routeId,
               pluginId: plugin.id,
-              value: $event
+              value: !$event
             })"
+            :checkedBg="'#68D391'"
+            :uncheckedBg="'#f56565'"
+            :style="getInlineColor(plugin.isDisabled, plugin.isActive)"
           />
           <div
             :class="[plugin.isActive ? 'text-green-500' : 'text-red-500']"
@@ -37,7 +42,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import ToggleButton from '@/components/ToggleButton.vue';
 
 export default {
   name: 'PluginCard',
@@ -57,10 +61,14 @@ export default {
   methods: {
     ...mapActions([
       'setPluginIsActive'
-    ])
-  },
-  components: {
-    ToggleButton
+    ]),
+    getInlineColor(isDisabled, isActive) {
+      if (isDisabled) {
+        const color = isActive ? '#f56565' : '#68D391';
+        return { background: `${color} !important` };
+      }
+      return {};
+    }
   }
 };
 </script>

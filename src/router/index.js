@@ -13,7 +13,6 @@ export const parseRoutes = () => {
       const component = () => import(
         `../views/${title}.vue`
       );
-      console.log(title);
       return {
         path,
         name: title,
