@@ -1,15 +1,20 @@
 # plugins-example
 
-two deminsions for states.
-
+## Missing features
 - i18n
 - mobile menu
 - error handling
 - cross browser
+- testing
 
 ## Project setup
 ```
 npm install
+```
+
+## Start server
+```
+npm run server
 ```
 
 ### Compiles and hot-reloads for development
