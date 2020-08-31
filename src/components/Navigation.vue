@@ -2,11 +2,9 @@
   <div class="navigation bg-gray-400">
     <div class="flex flex-col h-full">
       <div class="top flex-1">
-        <img
-          class="h-20 ml-8 w-3/5"
-          src="../assets/logo.svg"
-          alt="Logo"
-        >
+        <div class="h-20 ml-8 w-3/5 flex items-center">
+          <h1 class="text-4xl">Logo</h1>
+        </div>
 
         <router-link
           v-for="item in routes"
